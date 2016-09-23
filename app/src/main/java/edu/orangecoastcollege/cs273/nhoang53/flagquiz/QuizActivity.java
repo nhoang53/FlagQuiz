@@ -1,6 +1,7 @@
 package edu.orangecoastcollege.cs273.nhoang53.flagquiz;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.Set;
 
 public class QuizActivity extends AppCompatActivity {
     // key for reading data from SharedPreferences
@@ -112,7 +116,7 @@ public class QuizActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        if(preferencesChanged){
+        if(preferencesChanged) {
             // now that the default preferences have been set,
             // initialize QuizActivityFragment and start the quiz
             QuizActivityFragment quizFragment = (QuizActivityFragment)
@@ -123,8 +127,43 @@ public class QuizActivity extends AppCompatActivity {
                     PreferenceManager.getDefaultSharedPreferences(this));
             quizFragment.resetQuiz();
             preferencesChanged = false;
-            )
-
         }
     }
+
+    /**
+     * Listener to handle changes in the app's shared preferences (preferences.xml)
+     * If either the guess options or regions are changed, the quiz will restart with
+     * the new setting
+     */
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceschangeListener =
+            new SharedPreferences.OnSharedPreferenceChangeListener() {
+                @Override
+                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                    preferencesChanged = true; // user changed app setting
+
+                    QuizActivityFragment quizFragment = (QuizActivityFragment)
+                            getSupportFragmentManager().findFragmentById(R.id.quizFragment);
+
+                    if (key.equals(CHOICES)) { // # of choices to display changed
+                        quizFragment.updateGuessRows(sharedPreferences);
+                        quizFragment.resetQuiz();
+                    } else if (key.equals(REGIONS)) { // region to include changed
+                        Set<String> regions = sharedPreferences.getStringSet(REGIONS, null);
+
+                        if (regions != null && regions.size() > 0) {
+                            quizFragment.updateRegions(sharedPreferences);
+                            quizFragment.resetQuiz();
+                        } else { // Must select one region -- set North America as default
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            regions.add(getString(R.string.default_region));
+                            editor.putStringSet(REGIONS, regions);
+                            editor.apply();
+                        }
+
+                    }
+
+                    Toast.makeText(QuizActivity.this, R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
+
+                }
+            };
 }

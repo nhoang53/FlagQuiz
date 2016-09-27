@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_setting" />
 
     <fragment
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:name="edu.orangecoastcollege.cs273.nhoang53.flagquiz.QuizActivityFragment"
         android:id="@+id/quizFragment"

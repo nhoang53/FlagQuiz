@@ -9,7 +9,6 @@
     tools:context="edu.orangecoastcollege.cs273.nhoang53.flagquiz.QuizActivityFragment"
     tools:showIn="@layout/activity_quiz"
     android:orientation="vertical"
-    android:weightSum="1"
     android:id="@+id/quizLinearLayout">
 
 
@@ -24,13 +23,16 @@
         android:layout_margin="10dp" />
 
     <ImageView
-        android:layout_width="329dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:id="@+id/flagImageView"
         android:src="@drawable/flag"
         android:layout_gravity="center_horizontal"
         android:scaleType="fitCenter"
-        android:layout_weight="0.33" />
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/spacing"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,32 +41,33 @@
         android:text="@string/guess_country"
         android:id="@+id/guessCountryTextView"
         android:layout_gravity="center_horizontal"
-        android:textStyle="bold"
-        android:layout_margin="10dp" />
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/row1LinearLayout"
-        android:weightSum="1"
-        android:gravity="center_horizontal">
+        android:id="@+id/row1LinearLayout">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:text="New Button"
             android:id="@+id/button"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color"
+            android:lines="2"/>
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:text="New Button"
             android:id="@+id/button2"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            android:lines="2"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,20 +78,22 @@
         android:gravity="center_horizontal">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button3"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button4"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -99,20 +104,22 @@
         android:gravity="center_horizontal">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button5"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button6"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
     </LinearLayout>
 
     <LinearLayout
@@ -123,28 +130,31 @@
         android:gravity="center_horizontal">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button7"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="New Button"
             android:id="@+id/button8"
-            android:layout_weight="0.49"
-            style="@android:style/Widget.Material.Button.Colored" />
+            android:layout_weight="1"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:textColor="@color/button_text_color" />
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="answer"
         android:id="@+id/answerTextView"
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center" />
+        android:layout_marginTop="@dimen/answer_size"
+        android:layout_gravity="center"
+        android:textSize="@dimen/answer_size"
+        android:textStyle="bold" />
 </LinearLayout>

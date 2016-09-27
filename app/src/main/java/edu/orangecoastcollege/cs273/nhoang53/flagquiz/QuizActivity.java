@@ -2,6 +2,7 @@ package edu.orangecoastcollege.cs273.nhoang53.flagquiz;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class QuizActivity extends AppCompatActivity {
 
         // register listener for SharedPreferences changes
         PreferenceManager.getDefaultSharedPreferences(this).
-                registerOnSharedPreferenceChangeListener((preferenceschangeListener));
+                registerOnSharedPreferenceChangeListener((preferencesChangeListener));
 
         // determine screen size
         int screenSize = getResources().getConfiguration().screenLayout &
@@ -58,52 +59,6 @@ public class QuizActivity extends AppCompatActivity {
         // if running on phone-sized device, allow only portrait orientation
         if(phoneDevice)
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // get the device's urrent orientation
-        int orientation = getResources().getConfiguration().orientation;
-
-        // display the app's menu only in portrait orientation
-        if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            // inflate the menu
-            getMenuInflater().inflate(R.menu.menu_quiz, menu);
-            return true;
-        }
-        else
-            return false;
-    }
-
-    /**
-     *
-     * @param item
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        /*// Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-*/
-        Intent preferencesIntent = new Intent(this, SettingActivity.class);
-        startActivity(preferencesIntent);
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -131,12 +86,48 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     /**
+     * Shows the setting menu if the app is running on a phone or a portrait-Oriented
+     * table only. (Large screen sizes include the setting fragment in the layout)
+     * @param menu The setting menu.
+     * @return True if the setting menu was inflated, false otherwise.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // get the device's current orientation
+        int orientation = getResources().getConfiguration().orientation;
+
+        // display the app's menu only in portrait orientation
+        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+            // inflate the menu
+            getMenuInflater().inflate(R.menu.menu_quiz, menu);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    /**
+     * Displays the SettingsActivity when running on a phone or portrait-oriented
+     * tablet. Starts the activity by use of an Intent (no data passed because the
+     * shared preferences, preferences.xml, has all data necessary)
+     *
+     * @param item The menu item
+     * @return True if an option item was selected
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent preferencesIntent = new Intent(this, SettingActivity.class);
+        startActivity(preferencesIntent);
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Listener to handle changes in the app's shared preferences (preferences.xml)
      * If either the guess options or regions are changed, the quiz will restart with
      * the new setting
      */
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceschangeListener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private OnSharedPreferenceChangeListener preferencesChangeListener =
+            new OnSharedPreferenceChangeListener() {
                 @Override
                 public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                     preferencesChanged = true; // user changed app setting
@@ -147,13 +138,16 @@ public class QuizActivity extends AppCompatActivity {
                     if (key.equals(CHOICES)) { // # of choices to display changed
                         quizFragment.updateGuessRows(sharedPreferences);
                         quizFragment.resetQuiz();
-                    } else if (key.equals(REGIONS)) { // region to include changed
-                        Set<String> regions = sharedPreferences.getStringSet(REGIONS, null);
+                    }
+                    else if (key.equals(REGIONS)) { // region to include changed
+                        Set<String> regions =
+                                sharedPreferences.getStringSet(REGIONS, null);
 
                         if (regions != null && regions.size() > 0) {
                             quizFragment.updateRegions(sharedPreferences);
                             quizFragment.resetQuiz();
-                        } else { // Must select one region -- set North America as default
+                        }
+                        else { // Must select one region -- set North America as default
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             regions.add(getString(R.string.default_region));
                             editor.putStringSet(REGIONS, regions);
@@ -162,7 +156,8 @@ public class QuizActivity extends AppCompatActivity {
 
                     }
 
-                    Toast.makeText(QuizActivity.this, R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QuizActivity.this,
+                            R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
 
                 }
             };

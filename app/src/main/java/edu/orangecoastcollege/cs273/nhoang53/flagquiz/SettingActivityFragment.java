@@ -16,15 +16,7 @@ public class SettingActivityFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle bundle){
         super.onCreate(bundle);
+
         addPreferencesFromResource(R.xml.preferences); // load from XML
     }
-
-    /*public SettingActivityFragment() {
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_setting, container, false);
-    }*/
 }

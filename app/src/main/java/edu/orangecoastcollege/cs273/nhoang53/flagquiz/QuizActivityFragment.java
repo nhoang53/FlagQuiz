@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
@@ -46,13 +46,12 @@ public class QuizActivityFragment extends Fragment {
     private SecureRandom random; // used to randomize the quiz
     private Handler handler; // used to delay loading next flag
 
+    private LinearLayout quizLinearLayout; // layout that contains the quiz
     private TextView questionNumberTextView; // shows current question #
     private ImageView flagImageView; // displays a flag
     private LinearLayout[] guessLinearLayouts; // rows of answer Buttons
     private TextView answerTextView; // displays correct answer;
 
-    public QuizActivityFragment() {
-    }
 
     /**
      * Configures the QuizActivityFragment when its View is created.
@@ -70,24 +69,11 @@ public class QuizActivityFragment extends Fragment {
         fileNameList = new ArrayList<>();
         quizCountriesList = new ArrayList<>();
         random = new SecureRandom();
-        handler = new Handler() {
-            @Override
-            public void publish(LogRecord record) {
-
-            }
-
-            @Override
-            public void flush() {
-
-            }
-
-            @Override
-            public void close() throws SecurityException {
-
-            }
-        };
+        handler = new Handler();
 
         // get references to GUI components
+        quizLinearLayout =
+                (LinearLayout) view.findViewById(R.id.quizLinearLayout);
         questionNumberTextView = (TextView) view.findViewById(R.id.questionNumberTextView);
         flagImageView = (ImageView) view.findViewById(R.id.flagImageView);
         guessLinearLayouts = new LinearLayout[4];
@@ -152,6 +138,7 @@ public class QuizActivityFragment extends Fragment {
             for(String region : regionsSet){
                 // get a list of all flag image
                 String[] paths = assets.list(region);
+                System.out.println("")
 
                 for(String path : paths)
                     fileNameList.add(path.replace(".png", ""));
@@ -175,7 +162,7 @@ public class QuizActivityFragment extends Fragment {
             // get the random file name
             String fileName = fileNameList.get(randomIndex);
 
-            // If the region is anabled and it hans't already been chosen
+            // If the region is enabled and it hans't already been chosen
             if(!quizCountriesList.contains(fileName)){
                 quizCountriesList.add(fileName); // add the file to the list
                 ++flagCounter;
@@ -219,7 +206,7 @@ public class QuizActivityFragment extends Fragment {
 
         // put the correct answer at the end of fileNameList
         int correct = fileNameList.indexOf(correctAnswer);
-        fileNameList.add(fileNameList.remove(correct));
+        fileNameList.add(fileNameList.remove(correct)); // ???
 
         // add 2, 4, 6, or 8 guess Buttons based on the value of guessRows
         for(int row = 0; row < guessRows; row++){
@@ -249,7 +236,7 @@ public class QuizActivityFragment extends Fragment {
      * @return string country  name
      */
     private String getCountryName(String fileName){
-        return fileName.substring(fileName.indexOf('-'));
+        return fileName.substring(fileName.indexOf('-') + 1).replace('-', ' ');
     }
 
     /**
@@ -277,7 +264,9 @@ public class QuizActivityFragment extends Fragment {
                         getResources().getColor(R.color.correct_answer,
                                 getContext().getTheme()));
 
-                //disableButtons(); // disable all guess Buttons
+                disableButtons(); // disable all guess Buttons
+
+                loadNextFlag();
 
                 // if the user has correctly identified FLAGS_IN_QUIZ flags
                 if(correctAnswers == FLAGS_IN_QUIZ){
@@ -306,7 +295,23 @@ public class QuizActivityFragment extends Fragment {
                     };
                 }
             }
+            else{
+                // display "Incorrect!" in red
+                answerTextView.setText(R.string.incorrect_answer);
+                answerTextView.setTextColor(getResources().getColor(
+                        R.color.incorrect_answer, getContext().getTheme()));
+                guessButton.setEnabled(false); // disable incorrect answer
+            }
         }
     };
+
+    // utility method that disables all answer Buttons
+    private void disableButtons() {
+        for (int row = 0; row < guessRows; row++) {
+            LinearLayout guessRow = guessLinearLayouts[row];
+            for (int i = 0; i < guessRow.getChildCount(); i++)
+                guessRow.getChildAt(i).setEnabled(false);
+        }
+    }
 
 }

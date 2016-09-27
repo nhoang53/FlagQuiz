@@ -138,7 +138,7 @@ public class QuizActivityFragment extends Fragment {
             for(String region : regionsSet){
                 // get a list of all flag image
                 String[] paths = assets.list(region);
-                System.out.println("")
+                //System.out.println("");
 
                 for(String path : paths)
                     fileNameList.add(path.replace(".png", ""));

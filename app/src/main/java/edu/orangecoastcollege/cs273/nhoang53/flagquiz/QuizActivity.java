@@ -128,18 +128,21 @@ public class QuizActivity extends AppCompatActivity {
      */
     private OnSharedPreferenceChangeListener preferencesChangeListener =
             new OnSharedPreferenceChangeListener() {
+                // called when the user changes the app's preferences
                 @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                public void onSharedPreferenceChanged(
+                        SharedPreferences sharedPreferences, String key) {
                     preferencesChanged = true; // user changed app setting
 
                     QuizActivityFragment quizFragment = (QuizActivityFragment)
-                            getSupportFragmentManager().findFragmentById(R.id.quizFragment);
+                            getSupportFragmentManager().findFragmentById(
+                                    R.id.quizFragment);
 
                     if (key.equals(CHOICES)) { // # of choices to display changed
                         quizFragment.updateGuessRows(sharedPreferences);
                         quizFragment.resetQuiz();
                     }
-                    else if (key.equals(REGIONS)) { // region to include changed
+                    else if (key.equals(REGIONS)) { // regions to include changed
                         Set<String> regions =
                                 sharedPreferences.getStringSet(REGIONS, null);
 
@@ -147,18 +150,23 @@ public class QuizActivity extends AppCompatActivity {
                             quizFragment.updateRegions(sharedPreferences);
                             quizFragment.resetQuiz();
                         }
-                        else { // Must select one region -- set North America as default
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                        else {
+                            // must select one region--set North America as default
+                            SharedPreferences.Editor editor =
+                                    sharedPreferences.edit();
                             regions.add(getString(R.string.default_region));
                             editor.putStringSet(REGIONS, regions);
                             editor.apply();
-                        }
 
+                            Toast.makeText(QuizActivity.this,
+                                    R.string.default_region_message,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     Toast.makeText(QuizActivity.this,
-                            R.string.restarting_quiz, Toast.LENGTH_SHORT).show();
-
+                            R.string.restarting_quiz,
+                            Toast.LENGTH_SHORT).show();
                 }
             };
 }

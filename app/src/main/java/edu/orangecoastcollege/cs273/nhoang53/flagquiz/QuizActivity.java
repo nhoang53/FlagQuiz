@@ -75,7 +75,8 @@ public class QuizActivity extends AppCompatActivity {
             // now that the default preferences have been set,
             // initialize QuizActivityFragment and start the quiz
             QuizActivityFragment quizFragment = (QuizActivityFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.quizFragment);
+                    getFragmentManager().findFragmentById(R.id.quizFragment);
+                    //getSupportFragmentManager().findFragmentById(R.id.quizFragment);
             quizFragment.updateGuessRows(
                     PreferenceManager.getDefaultSharedPreferences(this));
             quizFragment.updateRegions(
@@ -135,7 +136,7 @@ public class QuizActivity extends AppCompatActivity {
                     preferencesChanged = true; // user changed app setting
 
                     QuizActivityFragment quizFragment = (QuizActivityFragment)
-                            getSupportFragmentManager().findFragmentById(
+                            getFragmentManager().findFragmentById(
                                     R.id.quizFragment);
 
                     if (key.equals(CHOICES)) { // # of choices to display changed

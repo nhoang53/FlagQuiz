@@ -8,8 +8,10 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
+//import android.support.v4.app.DialogFragment;
+//import android.support.v4.app.Fragment;
+import android.app.DialogFragment;
+import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -343,5 +345,7 @@ public class QuizActivityFragment extends Fragment {
                 guessRow.getChildAt(i).setEnabled(false);
         }
     }
+
+
 
 }

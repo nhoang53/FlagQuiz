@@ -3,12 +3,16 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android"
    android:interpolator="@android:anim/decelerate_interpolator">
 
-   <translate android:duration="100" android:fromXDelta="0"
-      android:toXDelta="-5%p"/>
+   <translate android:duration="100"
+       android:fromXDelta="0"
+      android:toXDelta="-10%p"/>
 
-   <translate android:duration="100" android:fromXDelta="-5%p"
-      android:toXDelta="5%p" android:startOffset="100"/>
+   <translate android:duration="100"
+       android:fromXDelta="-10%p"
+      android:toXDelta="10%p" android:startOffset="200"/>
 
-   <translate android:duration="100" android:fromXDelta="5%p"
-      android:toXDelta="-5%p" android:startOffset="200"/>
+   <translate android:duration="100"
+       android:fromXDelta="10%p"
+      android:toXDelta="-10%p"
+       android:startOffset="400"/>
 </set>
